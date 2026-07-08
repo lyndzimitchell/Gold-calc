@@ -1,0 +1,2 @@
+# Gold-calc
+Gold calculator
