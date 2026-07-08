@@ -12,117 +12,96 @@
   <title>Gold Calc</title>
   <style>
     :root {
-      --bg: #f7f2ea;
-      --card: #ffffff;
-      --ink: #2b2520;
-      --muted: #6f6258;
-      --accent: #b8872d;
-      --accent-dark: #8a631f;
-      --soft: #f1e2c4;
-      --danger: #9b2d20;
-      --good: #237a45;
-      --border: #ddd1bf;
+      --bg: #f7f2ea; --card: #ffffff; --ink: #2b2520; --muted: #6f6258;
+      --accent: #b8872d; --accent-dark: #8a631f; --soft: #f1e2c4;
+      --danger: #9b2d20; --good: #237a45; --border: #ddd1bf;
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg, #fbf7ef, var(--bg));
-      color: var(--ink);
-      padding: 18px;
-      padding-bottom: calc(18px + env(safe-area-inset-bottom));
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #fbf7ef, var(--bg)); color: var(--ink);
+      padding: 18px; padding-bottom: calc(18px + env(safe-area-inset-bottom));
     }
-    .wrap { max-width: 760px; margin: 0 auto; }
+    .wrap { max-width: 850px; margin: 0 auto; }
     h1 { margin: 10px 0 4px; font-size: 28px; letter-spacing: -0.5px; }
+    h2 { margin: 0 0 10px; font-size: 22px; }
     .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.35; }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 14px; }
+    .tab {
+      background:#fffdf9; color:var(--ink); border:1px solid var(--border); border-radius:999px;
+      padding:12px; font-weight:800; font-size:15px;
+    }
+    .tab.active { background: var(--accent); color:white; border-color: var(--accent); }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 8px 24px rgba(70, 48, 20, .08);
-      margin-bottom: 14px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 16px;
+      box-shadow: 0 8px 24px rgba(70, 48, 20, .08); margin-bottom: 14px;
     }
     label { display: block; font-weight: 700; margin: 12px 0 6px; }
-    input, select {
-      width: 100%;
-      padding: 13px 12px;
-      font-size: 18px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #fffdf9;
-      color: var(--ink);
+    input, select, textarea {
+      width: 100%; padding: 13px 12px; font-size: 18px; border: 1px solid var(--border);
+      border-radius: 12px; background: #fffdf9; color: var(--ink);
     }
+    textarea { min-height: 76px; resize: vertical; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    @media (max-width: 560px) {
-      .grid, .grid3 { grid-template-columns: 1fr; }
-      h1 { font-size: 24px; }
-    }
-    .results {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    @media (max-width: 560px) { .results { grid-template-columns: 1fr; } }
+    @media (max-width: 620px) { .grid, .grid3 { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
+    .results, .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    @media (max-width: 620px) { .results, .totals { grid-template-columns: 1fr; } }
     .result {
-      border-radius: 14px;
-      padding: 12px;
-      background: #fff9ee;
-      border: 1px solid var(--soft);
+      border-radius: 14px; padding: 12px; background: #fff9ee; border: 1px solid var(--soft);
     }
     .result .name { color: var(--muted); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
     .result .val { font-size: 24px; font-weight: 800; margin-top: 4px; }
     .big { background: #f8ecd3; border-color: #e7c780; }
     .big .val { font-size: 30px; color: var(--accent-dark); }
     .good .val { color: var(--good); }
-    .bad .val { color: var(--danger); }
     button {
-      appearance: none;
-      border: 0;
-      border-radius: 13px;
-      padding: 13px 14px;
-      font-weight: 800;
-      font-size: 16px;
-      color: white;
-      background: var(--accent);
-      width: 100%;
-      margin-top: 12px;
+      appearance: none; border: 0; border-radius: 13px; padding: 13px 14px; font-weight: 800;
+      font-size: 16px; color: white; background: var(--accent); width: 100%; margin-top: 12px;
     }
     button.secondary { background: #3f3832; }
     button.live { background: #237a45; }
-    button:disabled { opacity: .65; }
+    button.danger { background: var(--danger); }
+    button.small { width:auto; padding:9px 11px; font-size:13px; margin-top:0; }
+    button:disabled { opacity:.65; }
     .note { color: var(--muted); font-size: 14px; line-height: 1.35; margin-top: 10px; }
     .tiny { font-size: 12px; color: var(--muted); line-height: 1.35; }
     .pillrow { display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; }
     .pill {
-      border: 1px solid var(--border);
-      background: #fffdf9;
-      color: var(--ink);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
+      border: 1px solid var(--border); background: #fffdf9; color: var(--ink); padding: 8px 10px;
+      border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;
     }
-    .footer { text-align:center; margin: 18px 0 8px; color: var(--muted); font-size: 12px; }
-    .warn {
-      background:#fff3f1; border: 1px solid #efc2bb; color:#683026;
-      padding:10px 12px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.35;
-    }
-    .livebox {
-      background:#eef9f1; border: 1px solid #bfe5ca; color:#174c2a;
-      padding:10px 12px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.35;
-    }
+    .warn { background:#fff3f1; border: 1px solid #efc2bb; color:#683026; padding:10px 12px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.35; }
+    .livebox { background:#eef9f1; border: 1px solid #bfe5ca; color:#174c2a; padding:10px 12px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.35; }
     .livebox.fail { background:#fff3f1; border-color:#efc2bb; color:#683026; }
+    .hide { display:none; }
+    .item {
+      display:grid; grid-template-columns: 86px 1fr; gap:12px; padding:12px; border:1px solid var(--border);
+      border-radius:16px; background:#fffdf9; margin:10px 0;
+    }
+    .thumb {
+      width:86px; height:86px; border-radius:13px; object-fit:cover; background:#f1e2c4;
+      display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:800; font-size:12px; text-align:center;
+    }
+    .item h3 { margin:0 0 4px; font-size:17px; }
+    .itemmeta { color:var(--muted); font-size:13px; line-height:1.35; }
+    .itemvalue { font-size:20px; font-weight:900; color:var(--accent-dark); margin-top:7px; }
+    .itemActions { display:flex; gap:8px; margin-top:9px; flex-wrap:wrap; }
+    .badge { display:inline-block; font-weight:800; padding:4px 8px; border-radius:999px; background:#f8ecd3; color:#6a4715; font-size:12px; margin-left:4px; }
+    .footer { text-align:center; margin:18px 0 8px; color:var(--muted); font-size:12px; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Gold Calc</h1>
-    <p class="sub">Live gold spot when available. Manual override anytime. Built for quick buying decisions.</p>
+<div class="wrap">
+  <h1>Gold Calc</h1>
+  <p class="sub">Scrap calculator + simple melt-value inventory. Photos are optional. Inventory saves on this device/browser.</p>
 
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('calc')" id="tabCalc">Calculator</button>
+    <button class="tab" onclick="showTab('inv')" id="tabInv">Inventory</button>
+  </div>
+
+  <section id="calcSection">
     <div class="card">
       <div class="grid">
         <div>
@@ -142,10 +121,8 @@
           <input id="weight" type="number" inputmode="decimal" value="20" step="0.01">
           <label for="unit">Weight unit</label>
           <select id="unit">
-            <option value="g">grams</option>
-            <option value="dwt">pennyweight/dwt</option>
-            <option value="ozt">troy ounces</option>
-            <option value="oz">regular ounces</option>
+            <option value="g">grams</option><option value="dwt">pennyweight/dwt</option>
+            <option value="ozt">troy ounces</option><option value="oz">regular ounces</option>
           </select>
         </div>
       </div>
@@ -154,14 +131,10 @@
         <div>
           <label for="karat">Karat / purity</label>
           <select id="karat">
-            <option value="0.4167">10K</option>
-            <option value="0.500">12K</option>
-            <option value="0.585" selected>14K</option>
-            <option value="0.750">18K</option>
-            <option value="0.833">20K</option>
-            <option value="0.875">21K</option>
-            <option value="0.9167">22K</option>
-            <option value="0.999">24K / pure</option>
+            <option value="0.4167">10K</option><option value="0.500">12K</option>
+            <option value="0.585" selected>14K</option><option value="0.750">18K</option>
+            <option value="0.833">20K</option><option value="0.875">21K</option>
+            <option value="0.9167">22K</option><option value="0.999">24K / pure</option>
             <option value="custom">Custom %</option>
           </select>
           <input id="customPurity" type="number" inputmode="decimal" placeholder="Custom gold %, ex: 58.5" step="0.01" style="display:none;margin-top:8px;">
@@ -170,10 +143,8 @@
           <label for="payPct">Your max offer (% of melt)</label>
           <input id="payPct" type="number" inputmode="decimal" value="80" step="0.1">
           <div class="pillrow">
-            <span class="pill" onclick="setPay(70)">70%</span>
-            <span class="pill" onclick="setPay(80)">80%</span>
-            <span class="pill" onclick="setPay(85)">85%</span>
-            <span class="pill" onclick="setPay(90)">90%</span>
+            <span class="pill" onclick="setPay(70)">70%</span><span class="pill" onclick="setPay(80)">80%</span>
+            <span class="pill" onclick="setPay(85)">85%</span><span class="pill" onclick="setPay(90)">90%</span>
           </div>
         </div>
         <div>
@@ -197,7 +168,7 @@
 
       <button onclick="calc()">Calculate</button>
       <button class="secondary" onclick="clearOptional()">Clear optional fields</button>
-      <div class="warn">Reminder: live spot is a guide, not a guaranteed refiner settlement. Actual payout can change with assay, solder, stones, fees, market movement, and whether the piece is worth more intact.</div>
+      <div class="warn">Live spot is a guide, not a guaranteed refiner settlement. Actual payout can change with assay, solder, stones, fees, market movement, and whether the piece is worth more intact.</div>
     </div>
 
     <div class="card">
@@ -213,50 +184,124 @@
       </div>
       <p class="note" id="recommendation"></p>
     </div>
+  </section>
 
+  <section id="invSection" class="hide">
     <div class="card">
-      <strong>Formula</strong>
-      <p class="tiny">
-        Spot ÷ 31.1035 = pure gold price per gram.<br>
-        Weight in grams × purity × pure gold price per gram = melt value.<br>
-        Melt value × your buying percentage = maximum offer.<br>
-        Melt value × refiner payout % − fees − your cost = expected scrap profit.
-      </p>
+      <h2>Add inventory item</h2>
+      <label for="invBucket">Inventory bucket</label>
+      <select id="invBucket">
+        <option value="scrap">Scrap / melt inventory</option>
+        <option value="research">Needs research inventory</option>
+      </select>
+
+      <label for="invName">Item name / quick description</label>
+      <input id="invName" placeholder="Example: 14K broken rope chain">
+
+      <div class="grid3">
+        <div>
+          <label for="invKarat">Karat</label>
+          <select id="invKarat">
+            <option value="0.4167">10K</option><option value="0.500">12K</option>
+            <option value="0.585" selected>14K</option><option value="0.750">18K</option>
+            <option value="0.833">20K</option><option value="0.875">21K</option>
+            <option value="0.9167">22K</option><option value="0.999">24K / pure</option>
+            <option value="custom">Custom %</option>
+          </select>
+          <input id="invCustomPurity" type="number" inputmode="decimal" placeholder="Custom gold %, ex: 58.5" step="0.01" style="display:none;margin-top:8px;">
+        </div>
+        <div>
+          <label for="invWeight">Weight</label>
+          <input id="invWeight" type="number" inputmode="decimal" step="0.01" placeholder="Example: 12.4">
+        </div>
+        <div>
+          <label for="invUnit">Unit</label>
+          <select id="invUnit">
+            <option value="g">grams</option><option value="dwt">pennyweight/dwt</option>
+            <option value="ozt">troy ounces</option><option value="oz">regular ounces</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="invPaid">Optional: price paid ($)</label>
+      <input id="invPaid" type="number" inputmode="decimal" step="0.01" placeholder="What you paid, if you want to track it">
+
+      <label for="invNotes">Notes</label>
+      <textarea id="invNotes" placeholder="Hallmarks, stones, condition, where you bought it, why it needs research, etc."></textarea>
+
+      <label for="invPhoto">Optional photo</label>
+      <input id="invPhoto" type="file" accept="image/*" capture="environment">
+
+      <button onclick="addInventoryItem()">Save item to inventory</button>
+      <div class="note">Photos and inventory save locally on this device. If you clear website data or change phones/browsers, this local inventory may not transfer.</div>
     </div>
 
-    <div class="footer">Gold Calc · Verify karat, weight, and stones before paying.</div>
+    <div class="card">
+      <h2>Inventory melt totals</h2>
+      <div class="totals">
+        <div class="result big"><div class="name">Scrap / melt total</div><div class="val" id="scrapTotal">$0.00</div></div>
+        <div class="result big"><div class="name">Needs research total</div><div class="val" id="researchTotal">$0.00</div></div>
+        <div class="result"><div class="name">All inventory melt</div><div class="val" id="allTotal">$0.00</div></div>
+        <div class="result"><div class="name">Item count</div><div class="val" id="itemCount">0</div></div>
+      </div>
+      <button class="secondary" onclick="exportInventory()">Export backup JSON</button>
+      <button class="danger" onclick="clearInventory()">Clear all inventory</button>
+    </div>
+
+    <div class="card">
+      <h2>Scrap / melt inventory</h2>
+      <div id="scrapList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Needs research inventory</h2>
+      <div id="researchList"></div>
+    </div>
+  </section>
+
+  <div class="card">
+    <strong>Formula</strong>
+    <p class="tiny">
+      Spot ÷ 31.1035 = pure gold price per gram.<br>
+      Weight in grams × purity × pure gold price per gram = melt value.<br>
+      Inventory melt totals recalculate using the current spot price in the calculator box.
+    </p>
   </div>
+
+  <div class="footer">Gold Calc · Version 2 Inventory · Verify karat, weight, and stones before paying.</div>
+</div>
 
 <script>
 const GOLD_API_URLS = ["https://api.gold-api.com/price/XAU"];
+let inventory = JSON.parse(localStorage.getItem("goldCalcInventoryV2") || "[]");
 
-function money(n) {
-  if (!isFinite(n)) return "$0.00";
-  return n.toLocaleString(undefined, {style:"currency", currency:"USD"});
-}
-function num(id) {
-  const v = parseFloat(document.getElementById(id).value);
-  return isNaN(v) ? 0 : v;
-}
+function money(n) { if (!isFinite(n)) return "$0.00"; return n.toLocaleString(undefined, {style:"currency", currency:"USD"}); }
+function num(id) { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? 0 : v; }
 function weightToGrams(w, unit) {
-  if (unit === "g") return w;
-  if (unit === "dwt") return w * 1.55517384;
-  if (unit === "ozt") return w * 31.1034768;
-  if (unit === "oz") return w * 28.349523125;
-  return w;
+  if (unit === "g") return w; if (unit === "dwt") return w * 1.55517384;
+  if (unit === "ozt") return w * 31.1034768; if (unit === "oz") return w * 28.349523125; return w;
 }
-function getPurity() {
-  const k = document.getElementById("karat").value;
-  if (k === "custom") return num("customPurity") / 100;
-  return parseFloat(k);
+function purityLabel(p) {
+  const map = {"0.4167":"10K","0.500":"12K","0.585":"14K","0.750":"18K","0.833":"20K","0.875":"21K","0.9167":"22K","0.999":"24K"};
+  return map[String(p)] || (Number(p)*100).toFixed(1) + "%";
+}
+function getPurity() { const k = document.getElementById("karat").value; return k === "custom" ? num("customPurity")/100 : parseFloat(k); }
+function getInvPurity() { const k = document.getElementById("invKarat").value; return k === "custom" ? num("invCustomPurity")/100 : parseFloat(k); }
+function currentSpot() { return num("spot"); }
+function meltValue(weight, unit, purity) { return (currentSpot()/31.1034768) * weightToGrams(weight, unit) * purity; }
+function saveInventory(){ localStorage.setItem("goldCalcInventoryV2", JSON.stringify(inventory)); renderInventory(); }
+
+function showTab(tab) {
+  document.getElementById("calcSection").classList.toggle("hide", tab !== "calc");
+  document.getElementById("invSection").classList.toggle("hide", tab !== "inv");
+  document.getElementById("tabCalc").classList.toggle("active", tab === "calc");
+  document.getElementById("tabInv").classList.toggle("active", tab === "inv");
+  renderInventory();
 }
 function extractGoldPrice(data) {
   if (!data || typeof data !== "object") return null;
   const possible = [data.price, data.price_usd, data.ask, data.bid, data.close, data.rate];
-  for (const p of possible) {
-    const n = Number(p);
-    if (isFinite(n) && n > 1000 && n < 10000) return n;
-  }
+  for (const p of possible) { const n = Number(p); if (isFinite(n) && n > 1000 && n < 10000) return n; }
   return null;
 }
 function prettyTime(value) {
@@ -266,62 +311,35 @@ function prettyTime(value) {
   return d.toLocaleString();
 }
 async function fetchLiveGold() {
-  const btn = document.getElementById("liveBtn");
-  const status = document.getElementById("liveStatus");
-  btn.disabled = true;
-  btn.textContent = "Refreshing...";
-  status.className = "livebox";
-  status.textContent = "Checking live gold spot...";
+  const btn = document.getElementById("liveBtn"), status = document.getElementById("liveStatus");
+  btn.disabled = true; btn.textContent = "Refreshing..."; status.className = "livebox"; status.textContent = "Checking live gold spot...";
   try {
     let lastError = "";
     for (const url of GOLD_API_URLS) {
       try {
-        const res = await fetch(url, {cache: "no-store"});
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-        const price = extractGoldPrice(data);
+        const res = await fetch(url, {cache:"no-store"}); if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json(); const price = extractGoldPrice(data);
         if (price) {
           document.getElementById("spot").value = price.toFixed(2);
           const t = data.updatedAt || data.updated_at || data.timestamp || data.date;
-          status.className = "livebox";
-          status.textContent = "Live XAU/USD loaded: " + money(price) + " per troy oz. Updated: " + prettyTime(t) + ".";
-          calc();
-          return;
+          status.className = "livebox"; status.textContent = "Live XAU/USD loaded: " + money(price) + " per troy oz. Updated: " + prettyTime(t) + ".";
+          calc(); renderInventory(); return;
         }
         lastError = "Could not find a usable price in the response.";
-      } catch (e) { lastError = e.message || String(e); }
+      } catch(e) { lastError = e.message || String(e); }
     }
     throw new Error(lastError || "Live source unavailable.");
-  } catch (e) {
-    status.className = "livebox fail";
-    status.textContent = "Live price did not load. Type spot manually and the calculator still works. Details: " + (e.message || e);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Refresh live gold spot";
-  }
+  } catch(e) {
+    status.className = "livebox fail"; status.textContent = "Live price did not load. Type spot manually and the calculator still works. Details: " + (e.message || e);
+  } finally { btn.disabled = false; btn.textContent = "Refresh live gold spot"; }
 }
 function calc() {
-  const spot = num("spot");
-  const weight = num("weight");
-  const unit = document.getElementById("unit").value;
-  const grams = weightToGrams(weight, unit);
-  const purity = getPurity();
-  const payPct = num("payPct") / 100;
-  const refinerPct = num("refinerPct") / 100;
-  const fees = num("fees");
-  const perGram = spot / 31.1034768;
-  const pureGrams = grams * purity;
-  const melt = perGram * pureGrams;
-  const maxOffer = melt * payPct;
-  const actualOfferRaw = document.getElementById("actualOffer").value;
-  const cost = actualOfferRaw === "" ? maxOffer : num("actualOffer");
-  const refiner = (melt * refinerPct) - fees;
-  const profit = refiner - cost;
-  const roi = cost > 0 ? (profit / cost) * 100 : 0;
-  const jewelryRaw = document.getElementById("jewelrySell").value;
-  const jewelrySell = jewelryRaw === "" ? null : num("jewelrySell");
-  const jProfit = jewelrySell === null ? null : jewelrySell - cost;
-
+  const spot = num("spot"), weight = num("weight"), unit = document.getElementById("unit").value, grams = weightToGrams(weight, unit), purity = getPurity();
+  const payPct = num("payPct")/100, refinerPct = num("refinerPct")/100, fees = num("fees");
+  const perGram = spot/31.1034768, pureGrams = grams*purity, melt = perGram*pureGrams, maxOffer = melt*payPct;
+  const actualOfferRaw = document.getElementById("actualOffer").value, cost = actualOfferRaw === "" ? maxOffer : num("actualOffer");
+  const refiner = (melt*refinerPct) - fees, profit = refiner - cost, roi = cost > 0 ? (profit/cost)*100 : 0;
+  const jewelryRaw = document.getElementById("jewelrySell").value, jewelrySell = jewelryRaw === "" ? null : num("jewelrySell"), jProfit = jewelrySell === null ? null : jewelrySell - cost;
   document.getElementById("perGram").textContent = money(perGram);
   document.getElementById("pureGrams").textContent = pureGrams.toFixed(2) + " g";
   document.getElementById("melt").textContent = money(melt);
@@ -330,33 +348,89 @@ function calc() {
   document.getElementById("profit").textContent = money(profit);
   document.getElementById("roi").textContent = (isFinite(roi) ? roi.toFixed(1) : "0.0") + "%";
   document.getElementById("jProfit").textContent = jProfit === null ? "—" : money(jProfit);
-
-  let rec = "";
-  if (jProfit !== null) {
-    if (jProfit > profit) rec = "Recommendation: selling it as jewelry beats scrapping it by " + money(jProfit - profit) + ".";
-    else if (profit > jProfit) rec = "Recommendation: scrapping/refining beats jewelry resale by " + money(profit - jProfit) + ".";
-    else rec = "Recommendation: scrap and jewelry resale look about the same.";
-  } else {
-    rec = "Tip: enter a possible jewelry resale price when the piece is vintage, signed, antique, unusual, or wearable.";
-  }
-  document.getElementById("recommendation").textContent = rec;
+  document.getElementById("recommendation").textContent = jProfit === null ? "Tip: enter a possible jewelry resale price when the piece is vintage, signed, antique, unusual, or wearable." : (jProfit > profit ? "Recommendation: selling it as jewelry beats scrapping it by " + money(jProfit-profit) + "." : profit > jProfit ? "Recommendation: scrapping/refining beats jewelry resale by " + money(profit-jProfit) + "." : "Recommendation: scrap and jewelry resale look about the same.");
+  renderInventory();
 }
 function setSpot(v){ document.getElementById("spot").value = v; calc(); }
 function setPay(v){ document.getElementById("payPct").value = v; calc(); }
 function clearOptional(){ document.getElementById("actualOffer").value = ""; document.getElementById("jewelrySell").value = ""; calc(); }
 
-document.getElementById("karat").addEventListener("change", function(){
-  document.getElementById("customPurity").style.display = this.value === "custom" ? "block" : "none";
-  calc();
-});
-document.querySelectorAll("input, select").forEach(el => el.addEventListener("input", calc));
-calc();
-window.addEventListener("load", fetchLiveGold);
+function addInventoryItem() {
+  const name = document.getElementById("invName").value.trim() || "Unnamed item";
+  const weight = num("invWeight");
+  if (!weight) { alert("Add the item weight first."); return; }
+  const item = {
+    id: Date.now().toString(), bucket: document.getElementById("invBucket").value, name,
+    purity: getInvPurity(), karatText: document.getElementById("invKarat").value === "custom" ? (num("invCustomPurity") + "%") : document.getElementById("invKarat").selectedOptions[0].text,
+    weight, unit: document.getElementById("invUnit").value, paid: num("invPaid"), notes: document.getElementById("invNotes").value.trim(),
+    photo: "", created: new Date().toISOString()
+  };
+  const file = document.getElementById("invPhoto").files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) { item.photo = e.target.result; inventory.unshift(item); resetInvForm(); saveInventory(); };
+    reader.readAsDataURL(file);
+  } else { inventory.unshift(item); resetInvForm(); saveInventory(); }
+}
+function resetInvForm(){
+  document.getElementById("invName").value = ""; document.getElementById("invWeight").value = "";
+  document.getElementById("invPaid").value = ""; document.getElementById("invNotes").value = ""; document.getElementById("invPhoto").value = "";
+}
+function moveItem(id, bucket){ const item = inventory.find(x => x.id === id); if (item) { item.bucket = bucket; saveInventory(); } }
+function deleteItem(id){ if (confirm("Delete this inventory item?")) { inventory = inventory.filter(x => x.id !== id); saveInventory(); } }
+function renderList(bucket, elId) {
+  const el = document.getElementById(elId);
+  const items = inventory.filter(x => x.bucket === bucket);
+  if (!items.length) { el.innerHTML = "<p class='note'>No items saved here yet.</p>"; return; }
+  el.innerHTML = items.map(item => {
+    const melt = meltValue(item.weight, item.unit, item.purity);
+    const grams = weightToGrams(item.weight, item.unit);
+    const profit = item.paid ? melt - item.paid : null;
+    const img = item.photo ? `<img class="thumb" src="${item.photo}" alt="">` : `<div class="thumb">No photo</div>`;
+    const other = bucket === "scrap" ? "research" : "scrap";
+    const otherLabel = bucket === "scrap" ? "Move to research" : "Move to scrap";
+    return `<div class="item">
+      ${img}
+      <div>
+        <h3>${escapeHtml(item.name)} <span class="badge">${bucket === "scrap" ? "Scrap" : "Research"}</span></h3>
+        <div class="itemmeta">${escapeHtml(item.karatText)} · ${item.weight} ${item.unit} · ${grams.toFixed(2)} g total weight<br>
+        ${item.paid ? "Paid: " + money(item.paid) + " · Melt minus paid: " + money(profit) + "<br>" : ""}
+        ${item.notes ? escapeHtml(item.notes) : ""}</div>
+        <div class="itemvalue">Current melt: ${money(melt)}</div>
+        <div class="itemActions">
+          <button class="small secondary" onclick="moveItem('${item.id}','${other}')">${otherLabel}</button>
+          <button class="small danger" onclick="deleteItem('${item.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function renderInventory(){
+  const scrap = inventory.filter(x => x.bucket === "scrap").reduce((sum,x)=>sum+meltValue(x.weight,x.unit,x.purity),0);
+  const research = inventory.filter(x => x.bucket === "research").reduce((sum,x)=>sum+meltValue(x.weight,x.unit,x.purity),0);
+  document.getElementById("scrapTotal").textContent = money(scrap);
+  document.getElementById("researchTotal").textContent = money(research);
+  document.getElementById("allTotal").textContent = money(scrap + research);
+  document.getElementById("itemCount").textContent = inventory.length;
+  renderList("scrap", "scrapList"); renderList("research", "researchList");
+}
+function clearInventory(){
+  if (confirm("This will delete all saved inventory on this device. Are you sure?")) { inventory = []; saveInventory(); }
+}
+function exportInventory(){
+  const blob = new Blob([JSON.stringify(inventory, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob); const a = document.createElement("a");
+  a.href = url; a.download = "gold-calc-inventory-backup.json"; a.click(); URL.revokeObjectURL(url);
+}
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s])); }
+
+document.getElementById("karat").addEventListener("change", function(){ document.getElementById("customPurity").style.display = this.value === "custom" ? "block" : "none"; calc(); });
+document.getElementById("invKarat").addEventListener("change", function(){ document.getElementById("invCustomPurity").style.display = this.value === "custom" ? "block" : "none"; });
+document.querySelectorAll("input, select, textarea").forEach(el => el.addEventListener("input", () => { calc(); renderInventory(); }));
+calc(); renderInventory(); window.addEventListener("load", fetchLiveGold);
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
-  });
+  window.addEventListener("load", () => { navigator.serviceWorker.register("./service-worker.js").catch(() => {}); });
 }
 </script>
 </body>

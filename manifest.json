@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#f7f2ea",
   "theme_color": "#b8872d",
-  "description": "Quick gold melt, offer, refiner payout, and resale calculator.",
+  "description": "Gold melt calculator with simple inventory buckets.",
   "icons": [
     {
       "src": "icon.svg",

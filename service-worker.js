@@ -1,4 +1,4 @@
-const CACHE_NAME = "gold-calc-v1";
+const CACHE_NAME = "gold-calc-v2-inventory";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon.svg"];
 
 self.addEventListener("install", event => {
@@ -7,11 +7,9 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.map(key => {
-      if (key !== CACHE_NAME) return caches.delete(key);
-    })))
-  );
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => {
+    if (key !== CACHE_NAME) return caches.delete(key);
+  }))));
   self.clients.claim();
 });
 
@@ -21,7 +19,5 @@ self.addEventListener("fetch", event => {
     event.respondWith(fetch(event.request));
     return;
   }
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
-  );
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });
